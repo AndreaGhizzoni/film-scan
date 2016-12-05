@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/AndreaGhizzoni/film-scan/model"
@@ -18,10 +16,8 @@ func parseError(err error) {
 
 func main() {
 	path := "/home/andrea/infos/2012.mkv.json"
-	raw, err := ioutil.ReadFile(path)
+	err, f := model.FromJSON(path)
 	parseError(err)
 
-	var f model.FilmStat
-	err = json.Unmarshal(raw, &f)
-	parseError(err)
+	fmt.Println(f)
 }
