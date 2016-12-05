@@ -1,5 +1,11 @@
 package model
 
+import (
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
+)
+
 type FilmStat struct {
 	SourceFilePath  string `json:"SourceFile"`
 	Name            string `json:"FileName"`
@@ -22,4 +28,28 @@ type FilmStat struct {
 	TrackType       string `json:"TrackType"`
 	CodecID         string `json:"CodecID"`
 	ImageSize       string `json:"ImageSize"`
+}
+
+func FromJSON(path string) (error, FilmStat) {
+	row, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var f FilmStat
+	err = json.Unmarshal(row, &f)
+
+	return err, f
+}
+
+func (this FilmStat) String() string {
+	b, err := json.Marshal(this)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var out bytes.Buffer
+	json.Indent(&out, b, "", "   ")
+
+	return out.String()
 }
