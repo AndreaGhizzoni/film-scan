@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 )
 
 type FilmStat struct {
+	Id              string
 	SourceFilePath  string `json:"SourceFile"`
 	Name            string `json:"FileName"`
 	Directory       string `json:"Directory"`
@@ -20,10 +22,10 @@ type FilmStat struct {
 	ImageWidth      int    `json:"ImageWidth"`
 	ImageHeight     int    `json:"ImageHeight"`
 	DisplayWidth    int    `json:"DisplayWidth"`
-	DisplayHeight   int    `json:"DisplayHeigth"`
+	DisplayHeight   int    `json:"DisplayHeight"`
 	AudioCodecID    string `json:"AudioCodecID"`
 	AudioSampleRate int    `json:"AudioSampleRate"`
-	AudioChannel    int    `json:"AudioChannel"`
+	AudioChannels   int    `json:"AudioChannels"`
 	TrackNumber     int    `json:"TrackNumber"`
 	TrackType       string `json:"TrackType"`
 	CodecID         string `json:"CodecID"`
@@ -38,11 +40,16 @@ func FromJSON(path string) (error, FilmStat) {
 
 	var f FilmStat
 	err = json.Unmarshal(row, &f)
+	f.Id = extractId(&f)
 
 	return err, f
 }
 
-func (this FilmStat) String() string {
+func extractId(f *FilmStat) string {
+	return strings.ToLower(strings.Replace(f.Name, " ", ".", -1))
+}
+
+func (this FilmStat) ToJSON() string {
 	b, err := json.Marshal(this)
 	if err != nil {
 		panic(err.Error())
@@ -52,4 +59,8 @@ func (this FilmStat) String() string {
 	json.Indent(&out, b, "", "   ")
 
 	return out.String()
+}
+
+func (this FilmStat) String() string {
+	return "TODO"
 }
