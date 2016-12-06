@@ -17,10 +17,12 @@ type FilmStat struct {
 	MIMEType        string `json:"MIMEType"`
 	DocType         string `json:"DocType"`
 	Duration        string `json:"Duration"`
-	VideoCodecID    string `json:"VideoCodecID"`
+	VideoCodecID    string `json:"VideoCodec"`
 	FrameRate       int    `json:"VideoFrameRate"`
 	ImageWidth      int    `json:"ImageWidth"`
 	ImageHeight     int    `json:"ImageHeight"`
+	Compression     string `json:"Compression"`
+	Encoding        string `json:"Encoding"`
 	DisplayWidth    int    `json:"DisplayWidth"`
 	DisplayHeight   int    `json:"DisplayHeight"`
 	AudioCodecID    string `json:"AudioCodecID"`
