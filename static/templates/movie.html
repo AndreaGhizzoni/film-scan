@@ -1,0 +1,10 @@
+<!--movie.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+    <!--Display the name of the Movie -->
+    <h1>{{.payload.Name}}</h1>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
