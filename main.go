@@ -19,5 +19,5 @@ func main() {
 	err, f := model.FromJSON(path)
 	parseError(err)
 
-	fmt.Println(f)
+	fmt.Println(f.ToJSON())
 }
