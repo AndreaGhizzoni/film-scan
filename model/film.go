@@ -1,7 +1,6 @@
 package model
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -9,7 +8,10 @@ import (
 )
 
 type FilmStat struct {
-	Id              string
+	// non-json field
+	Id         string
+	PrittyName string
+	// json field
 	SourceFilePath  string      `json:"SourceFile"`
 	Name            string      `json:"FileName"`
 	Directory       string      `json:"Directory"`
@@ -44,6 +46,7 @@ func FromJSON(path string) (error, FilmStat) {
 	var f FilmStat
 	err = json.Unmarshal(row, &f)
 	f.Id = extractId(&f)
+	f.PrittyName = (strings.Split(f.Name, "."))[0]
 
 	return err, f
 }
@@ -59,9 +62,16 @@ func GetMovieByID(id string, films []FilmStat) (FilmStat, error) {
 }
 
 func extractId(f *FilmStat) string {
-	return strings.ToLower(strings.Replace(f.Name, " ", ".", -1))
+	replacer := strings.NewReplacer(
+		" ", "",
+		",", "",
+		"-", "",
+	)
+
+	return replacer.Replace(f.Name)
 }
 
+/*
 func (this FilmStat) ToJSON() string {
 	b, err := json.Marshal(this)
 	if err != nil {
@@ -73,6 +83,7 @@ func (this FilmStat) ToJSON() string {
 
 	return out.String()
 }
+*/
 
 func (this FilmStat) String() string {
 	return "TODO"

@@ -3,8 +3,19 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Home/</a>
+                <a class="navbar-brand" href="{{.payload.Id}}">
+                    {{.payload.PrittyName}}
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <!--Display the name of the Movie -->
-    <h1>{{.payload.Name}}</h1>
+    <h1>{{.payload.PrittyName }}</h1>
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
