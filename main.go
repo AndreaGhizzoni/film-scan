@@ -30,7 +30,7 @@ func parseAllFiles() {
 }
 
 func main() {
-	ParseAllFiles()
+	parseAllFiles()
 
 	// Set the router as the default one provided by Gin
 	route = gin.Default()
