@@ -4,11 +4,14 @@ package main
 
 import (
 	"github.com/AndreaGhizzoni/film-scan/model"
+	"github.com/AndreaGhizzoni/film-scan/templates"
 	"github.com/gin-gonic/gin"
 )
 
-var route *gin.Engine
-var films []model.FilmStat
+var (
+	route *gin.Engine
+	films []model.FilmStat
+)
 
 func main() {
 
@@ -17,7 +20,7 @@ func main() {
 
 	// Process the templates at the start so that they don't have to be loaded
 	// from the disk again. This makes serving HTML pages very fast.
-	route.LoadHTMLGlob("static/templates/*")
+	route.LoadHTMLGlob(templates.BasePath)
 
 	films = model.ParseAllFiles()
 	initRoute(route) // in route.go
