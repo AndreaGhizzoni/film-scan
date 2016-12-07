@@ -48,21 +48,6 @@ func FromJSON(path string) (error, FilmStat) {
 	return err, f
 }
 
-func ParseAllFiles() []FilmStat {
-	basePath := "/home/andrea/infos/" // TODO change this
-	files, _ := ioutil.ReadDir(basePath)
-	films := []FilmStat{}
-	for _, f := range files {
-		err, f := FromJSON(basePath + f.Name())
-		if err != nil {
-			panic(err)
-		}
-
-		films = append(films, f)
-	}
-	return films
-}
-
 func GetMovieByID(id string, films []FilmStat) (FilmStat, error) {
 	// TODO TESTING PURPOSE, I DO NOT LIKE THIS AT ALL
 	for _, f := range films {

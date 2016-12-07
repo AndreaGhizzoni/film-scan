@@ -3,6 +3,8 @@
 package main
 
 import (
+	"io/ioutil"
+
 	"github.com/AndreaGhizzoni/film-scan/model"
 	"github.com/AndreaGhizzoni/film-scan/templates"
 	"github.com/gin-gonic/gin"
@@ -13,7 +15,22 @@ var (
 	films []model.FilmStat
 )
 
+// this function parse all json data of movies
+func parseAllFiles() {
+	basePath := "/home/andrea/infos/" // TODO change this
+	files, _ := ioutil.ReadDir(basePath)
+	for _, f := range files {
+		err, f := model.FromJSON(basePath + f.Name())
+		if err != nil {
+			panic(err)
+		}
+
+		films = append(films, f)
+	}
+}
+
 func main() {
+	ParseAllFiles()
 
 	// Set the router as the default one provided by Gin
 	route = gin.Default()
@@ -22,7 +39,6 @@ func main() {
 	// from the disk again. This makes serving HTML pages very fast.
 	route.LoadHTMLGlob(templates.BasePath)
 
-	films = model.ParseAllFiles()
 	initRoute(route) // in route.go
 
 	// Start serving the application
