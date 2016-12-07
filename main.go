@@ -35,6 +35,7 @@ func main() {
 	// Set the router as the default one provided by Gin
 	route = gin.Default()
 
+	//route.Static("static/css", "/static/css")
 	// Process the templates at the start so that they don't have to be loaded
 	// from the disk again. This makes serving HTML pages very fast.
 	route.LoadHTMLGlob(templates.BasePath)
