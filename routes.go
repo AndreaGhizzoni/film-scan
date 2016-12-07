@@ -11,26 +11,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// This function initialize all the route
 func initRoute(route *gin.Engine) {
 	route.GET(entry_point.Index, showIndex)
 	route.GET(entry_point.ViewMovie, showMovie)
 }
 
-// TODO change this doc
-// Define the route for the index page and display the index.html template
-// To start with, we'll use an inline route handler. Later on, we'll create
-// standalone functions that will be used as route handlers.
+// Define the route for the home page
 func showIndex(c *gin.Context) {
-
 	render(
 		c,
 		gin.H{
 			"title":   "Home Page",
-			"payload": films},
-		templates.Index)
+			"payload": films,
+		},
+		templates.Index,
+	)
 }
 
-// TODO add doc
+// Define the route for viewing a movie stats page
 func showMovie(c *gin.Context) {
 	// Check if the movie ID is valid
 	movieId := c.Param("movie_id")
@@ -41,24 +40,19 @@ func showMovie(c *gin.Context) {
 			c,
 			gin.H{
 				"title":   f.Name,
-				"payload": f},
-			templates.ViewMovie)
+				"payload": f,
+			},
+			templates.ViewMovie,
+		)
 	} else {
-		// If the article is not found, abort with an error
+		// If movieID is not found, abort with an error
 		c.AbortWithError(http.StatusNotFound, err)
 	}
-
-	/* TODO do this check
-	} else {
-		// If an invalid article ID is specified in the URL, abort with an error
-		c.AbortWithStatus(http.StatusNotFound)
-	}
-	*/
 }
 
 // Render one of HTML, JSON or CSV based on the 'Accept' header of the request
-// If the header doesn't specify this, HTML is rendered, provided that
-// the template name is present
+// If the header doesn't specify this, HTML is rendered, provided that the
+// template name is present
 func render(c *gin.Context, data gin.H, templateName string) {
 
 	switch c.Request.Header.Get("Accept") {
