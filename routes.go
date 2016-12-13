@@ -39,7 +39,7 @@ func showMovie(c *gin.Context) {
 		render(
 			c,
 			gin.H{
-				"title":   f.Name,
+				"title":   f.PrittyName,
 				"payload": f,
 			},
 			templates.ViewMovie,

@@ -12,7 +12,7 @@ import (
 
 var (
 	route *gin.Engine
-	films []model.FilmStat
+	films []model.Film
 )
 
 // this function parse all json data of movies
