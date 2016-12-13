@@ -11,12 +11,31 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">Movies</a>
             </div>
+
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a>{{.payload.PrittyName }}</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
 
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
-        <h1>{{.payload.PrittyName }}</h1>
+        <h3>{{.payload.PrittyName }}</h3>
+        <table class="table table-striped">
+            <tr><th>Duration</th><td>{{.payload.Duration}}</td></tr>
+            <tr><th>Image Dimension</th><td>{{.payload.Size.Width}}x{{.payload.Size.Height}}</td></tr>
+            
+            
+            <tr><th>Source</th><td>{{.payload.File.Source}}</td></tr>
+            <tr><th>Directory</th><td>{{.payload.File.Directory}}</td></tr>
+            <tr><th>File Size</th><td>{{.payload.File.Size}}</td></tr>
+            <tr><th>Type</th><td>{{.payload.File.Type}}</td></tr>
+            <tr><th>Mime Type</th><td>{{.payload.File.MimeType}}</td></tr>
+            <tr><th>Video Codec</th><td>{{.payload.File.VideoCodec}}</td></tr>
+            <tr><th>Frame Rate</th><td>{{.payload.File.FrameRate}}</td></tr>
+        </table>
     </div>
 
 </div><!-- /container -->
