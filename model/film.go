@@ -1,9 +1,9 @@
 package model
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
@@ -30,30 +30,7 @@ type Film struct {
 	}
 }
 
-// TODO add more doc:
-// TODO separate this structure and related method to separated file
-// json field
-type FilmStat struct {
-	SourceFilePath string  `json:"SourceFile"`
-	Name           string  `json:"FileName"`
-	Directory      string  `json:"Directory"`
-	Size           string  `json:"FileSize"`
-	Type           string  `json:"FileType"`
-	MIMEType       string  `json:"MIMEType"`
-	Duration       string  `json:"Duration"`
-	VideoCodec     string  `json:"VideoCodec"`
-	FrameRate      float32 `json:"VideoFrameRate,float32"`
-	DisplayWidth   float32 `json:"DisplayWidth,float32"`
-	DisplayHeight  float32 `json:"DisplayHeight,float32"`
-	ImageWidth     float32 `json:"ImageWidth,float32"`
-	ImageHeight    float32 `json:"ImageHeight,float32"`
-	ImageSize      string  `json:"ImageSize"`
-
-	// TODO try to read trivial entry as json.RawMessage (or similar) and try to
-	// cast it by hand ?
-}
-
-func extractFromJSON(jsonRaw FilmStat) Film {
+func extractFromJSON(jsonRaw RawJson) Film {
 	var f Film
 	replacer := strings.NewReplacer(
 		" ", "",
@@ -87,19 +64,14 @@ func extractFromJSON(jsonRaw FilmStat) Film {
 	return f
 }
 
+//TODO add doc
 func FromJSON(path string) (error, Film) {
-	row, err := ioutil.ReadFile(path)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	var raw FilmStat
-	err = json.Unmarshal(row, &raw)
+	err, rawJson := readRawJSON(path)
 	if err != nil {
 		return err, Film{}
 	}
 
-	return nil, extractFromJSON(raw)
+	return nil, extractFromJSON(rawJson)
 }
 
 func GetMovieByID(id string, films []Film) (Film, error) {
@@ -112,8 +84,8 @@ func GetMovieByID(id string, films []Film) (Film, error) {
 	return Film{}, errors.New("Film with id: " + id + " not found.")
 }
 
-/*
-func (this FilmStat) ToJSON() string {
+// TODO add doc
+func (this Film) ToJSON() string {
 	b, err := json.Marshal(this)
 	if err != nil {
 		panic(err.Error())
@@ -124,8 +96,7 @@ func (this FilmStat) ToJSON() string {
 
 	return out.String()
 }
-*/
 
-func (this FilmStat) String() string {
+func (this Film) String() string {
 	return "TODO"
 }
