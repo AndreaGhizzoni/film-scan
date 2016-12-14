@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -44,7 +45,10 @@ type FilmStat struct {
 	FrameRate      float32 `json:"VideoFrameRate,float32"`
 	DisplayWidth   float32 `json:"DisplayWidth,float32"`
 	DisplayHeight  float32 `json:"DisplayHeight,float32"`
-	// TODO get also: ImageWidth, ImageHeight and ImageSize
+	ImageWidth     float32 `json:"ImageWidth,float32"`
+	ImageHeight    float32 `json:"ImageHeight,float32"`
+	ImageSize      string  `json:"ImageSize"`
+
 	// TODO try to read trivial entry as json.RawMessage (or similar) and try to
 	// cast it by hand ?
 }
@@ -59,8 +63,19 @@ func extractFromJSON(jsonRaw FilmStat) Film {
 	f.Id = replacer.Replace(jsonRaw.Name)
 	f.PrittyName = (strings.Split(jsonRaw.Name, "."))[0]
 	f.Duration = jsonRaw.Duration
-	f.Size.Width = int(jsonRaw.DisplayWidth)
-	f.Size.Height = int(jsonRaw.DisplayHeight)
+	if jsonRaw.ImageWidth != 0 && jsonRaw.ImageHeight != 0 {
+		f.Size.Width = int(jsonRaw.ImageWidth)
+		f.Size.Height = int(jsonRaw.ImageHeight)
+	} else if jsonRaw.DisplayWidth != 0 && jsonRaw.DisplayHeight != 0 {
+		f.Size.Width = int(jsonRaw.DisplayWidth)
+		f.Size.Height = int(jsonRaw.DisplayHeight)
+	} else if jsonRaw.ImageSize != "" {
+		split := strings.Split(jsonRaw.ImageSize, "x")
+		width, _ := strconv.Atoi(split[0])
+		height, _ := strconv.Atoi(split[1])
+		f.Size.Width = width
+		f.Size.Height = height
+	}
 	f.File.Source = jsonRaw.SourceFilePath
 	f.File.Directory = jsonRaw.Directory
 	f.File.Size = jsonRaw.Size
