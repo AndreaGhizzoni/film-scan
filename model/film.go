@@ -61,10 +61,26 @@ func extractFromJSON(jsonRaw RawJson) Film {
 	f.File.Size = jsonRaw.Size
 	f.File.Type = jsonRaw.Type
 	f.File.MimeType = jsonRaw.MIMEType
-	f.File.VideoCodec = jsonRaw.VideoCodec
+	vc := string(jsonRaw.VideoCodec)
+	vcid := string(jsonRaw.VideoCodecID)
+	if vc == "" {
+		if vcid != "" {
+			f.File.VideoCodec = vcid
+		} else {
+			f.File.VideoCodec = "Info not available"
+		}
+	} else {
+		f.File.VideoCodec = vc
+	}
+
 	f.File.FrameRate = jsonRaw.FrameRate
 
-	f.Audio.Channels = jsonRaw.AudioChannelsString
+	ac := string(jsonRaw.AudioChannelsString)
+	if ac == "" {
+		f.Audio.Channels = "Info not available"
+	} else {
+		f.Audio.Channels = ac
+	}
 
 	return f
 }
