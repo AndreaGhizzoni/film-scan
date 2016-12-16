@@ -28,6 +28,9 @@ type Film struct {
 		VideoCodec string
 		FrameRate  float32
 	}
+	Audio struct {
+		Channels string
+	}
 }
 
 func extractFromJSON(jsonRaw RawJson) Film {
@@ -60,6 +63,8 @@ func extractFromJSON(jsonRaw RawJson) Film {
 	f.File.MimeType = jsonRaw.MIMEType
 	f.File.VideoCodec = jsonRaw.VideoCodec
 	f.File.FrameRate = jsonRaw.FrameRate
+
+	f.Audio.Channels = jsonRaw.AudioChannelsString
 
 	return f
 }
