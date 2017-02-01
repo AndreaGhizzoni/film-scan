@@ -2,7 +2,12 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+)
+
+var (
+	countID = 0
 )
 
 type StreamCodec struct {
@@ -38,6 +43,7 @@ type FFormat struct {
 }
 
 type RawMovie struct {
+	Id      int
 	Streams []StreamCodec `json:"streams"`
 	Format  FFormat       `json:"format"`
 }
@@ -55,6 +61,8 @@ func Parse(moviePath string) (*RawMovie, error) {
 		return nil, err
 	}
 
+	f.Id = countID
+	countID += 1
 	return &f, nil
 }
 
@@ -75,4 +83,13 @@ func ParseAll(directory string) ([]RawMovie, error) {
 	}
 
 	return rawMovies, nil
+}
+
+func GetMovieById(movies []RawMovie, id int) (*RawMovie, error) {
+	for _, m := range movies {
+		if m.Id == id {
+			return &m, nil
+		}
+	}
+	return nil, fmt.Errorf("Movie with id %d not found", id)
 }
